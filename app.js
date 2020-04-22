@@ -702,6 +702,7 @@ async function getNextEvent() {
 async function sendGP(user, channel, amount) {
   const completed = await hasCompletedTutorial(user);
   if (completed) {
+
     console.log(
       `${user} has completed this tutorial before, so I won't give them the gp.`
     );
@@ -720,6 +721,7 @@ async function sendGP(user, channel, amount) {
         reason: "Starting you off!"
       })
       .then(response => console.log(response));
+
   }
 }
 
