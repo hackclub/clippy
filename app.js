@@ -7,7 +7,7 @@ const axios = require("axios");
 
 const islandTable = new AirtablePlus({
   apiKey: process.env.AIRTABLE_API_KEY,
-  baseID: "appcstNeqDROujKE7",
+  baseID: "appYGt7P3MtotTotg",
   tableName: "Tutorial Island"
 });
 
@@ -161,7 +161,7 @@ app.event("message", async body => {
       //console.log(body)
       // send it to welcome-committee
       await sendMessage(
-        "C011YTBQ205",
+        "GLFAEL1SL",
         "New user <@" +
           body.event.user +
           "> joined! Here's why they joined the Hack Club community:\n\n" +
@@ -216,10 +216,10 @@ app.event("message", async body => {
       });
 
       // add user to #welcome
-      await inviteUserToChannel(body.event.user, "C0122U8G28M");
+      await inviteUserToChannel(body.event.user, "C75M7C0SY");
       const island = await getIslandName(body.event.user);
       await sendEphemeralMessage(
-        "C0122U8G28M",
+        "C75M7C0SY",
         `<@${body.event.user}> Feel free to introduce yourself to the community in <#C75M7C0SY>. When you're done, head back to <https://hackclub.slack.com/archives/${island}|#${island}> to continue your introduction to the community.`,
         body.event.user
       );
