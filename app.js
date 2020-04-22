@@ -127,11 +127,45 @@ app.event('message', async body => {
     if (lastBotMessage.includes('What brings you')) {
       // send it to welcome-committee
       await sendMessage('GLFAEL1SL', 'New user <@' + body.event.user + '> joined! Here\'s why they joined the Hack Club community:\n\n' + lastUserMessage + '\n\nReact to this message to take ownership on reaching out.', 10)
-      
-      await sendMessage(body.event.channel, `Ah, very interesting! Well, let me show you around the community.`)
-      await sendMessage(body.event.channel, `You're currently on Slack, the platform our community uses. If you're familiar with Discord, you'll find that Slack feels similar.`)
-      await sendMessage(body.event.channel, `Slack is organized into "channels", and each channel includes discussion about its own topic. We have _hundreds_ of channels, covering everything from game development and web design to photography and cooking. I'll show you a few of my favorites in a minute.`, 5000)
-      await sendMessage(body.event.channel, `I just invited you to your first channel, <#C75M7C0SY>. Join by clicking on it in your sidebar, and introduce yourself to the community.`, 5000)
+      await app.client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: body.channel.id,
+        blocks: [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "Ah, very interesting! Well, let me show you around the community."
+            }
+          },
+          {
+            "type": "divider"
+          },
+              {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": ":round_pushpin:You're currently on Slack, the platform our community uses. If you're familiar with Discord, you'll find that Slack feels similar. Slack is organized into \"channels\", and each channel includes discussion about its own topic.\n \n We have hundreds of channels, covering everything from game development and web design to photography and cooking. I'll show you a few of my favorites in a minute."
+            }
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "*#welcome* \n\nI just invited you to your first channel, #welcome. Join by clicking on it in your sidebar, and introduce yourself to the community."
+            },
+            "accessory": {
+              "type": "image",
+              "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/waving-hand-sign_1f44b.png",
+              "alt_text": "Waving Hand"
+            }
+                  
+          }
+        ]
+      })
       
       // add user to #welcome
       await inviteUserToChannel(body.event.user, 'C75M7C0SY')
@@ -148,39 +182,188 @@ app.action('introduced', async ({ ack, body }) => {
   updateInteractiveMessage(body.message.ts, body.channel.id, 'Awesome! Let\'s keep going.')
   
   const nextEvent = await getNextEvent()
-  await sendMessage(body.channel.id, `There are awesome things happening in the Hack Club community every day! Check out <#C0266FRGT> to see the latest community event. We do everything from coding challenges to AMAs with famous people (e.g. Tom Preston-Werner) to fun hangouts, and more!`)
-  //await sendMessage(body.channel.id, `The next community event is called *${nextEvent.name}*, and it's happening on ${nextEvent.day} at ${nextEvent.time} eastern time. You can <${nextEvent.url}|learn more about the event by clicking here>. We'd love to see you there!`, 5000)
-  await sendMessage(body.channel.id, `Our favorite recurring community event is called <#C0JDWKJVA>. Hack Night is a biweekly call where we all get together and hang out, build things, and have fun! Hack Night happens on Saturdays at 8:30pm eastern and Wednesdays at 3:30pm eastern. We'd love to see you at the next one!`, 7000)
-  await sendMessage(body.channel.id, `We also have a community-wide currency called gp! Right now, you can only use it for <#CSHEL6LP5>, <#CN9LWFDQF>, and <#CL4DMMCLQ>—but stay tuned for more super exciting uses!`, 5000)
+  await app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: body.channel.id,
+    blocks: [
+      
+      {
+        "type": "divider"
+      },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "There are awesome things happening in the Hack Club community every day! Check out #announcements to see the latest community event. We do everything from coding challenges to AMAs with famous people (e.g. Tom Preston-Werner) to fun hangouts, and more!"
+        },
+        //"text": {
+          //"type": "mrkdwn",
+          //"text": "The next community event is called *${nextEvent.name}*, and it's happening on ${nextEvent.day} at ${nextEvent.time} eastern time. You can <${nextEvent.url}|learn more about the event by clicking here>. We'd love to see you there!"
+        //},
 
-  await sendMessage(body.channel.id, `Let me start you off with some gp.`)
-  await sendGP(body.user.id, body.channel.id, 20)
-  await sendMessage(body.channel.id, `You can check your balance at anytime by typing \`/balance\``)
-
-  await sendMessage(body.channel.id, `One last thing: please make sure to read our <${`https://hackclub.com/conduct`}|code of conduct>. All community members are expected to follow the code of conduct.`, 5000, null, true)
-  await sendSingleBlockMessage(body.channel.id, `Once you've read the code of conduct, click the 👍 to continue with the tutorial.`, '👍', `coc_acknowledge`)
-});
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/spiral-calendar-pad_1f5d3.png",
+          "alt_text": "Calendar"
+        }
+      },
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*#hack-night* \n\nOur favorite recurring community event is called #hack-night. Hack Night is a biweekly call where we all get together and hang out, build things, and have fun! Hack Night happens on Saturdays at 8:30pm eastern and Wednesdays at 3:30pm eastern. We'd love to see you at the next one!"
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/waxing-crescent-moon-symbol_1f312.png",
+				"alt_text": "Moon"
+			}
+        },
+        ,
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*GP (AKA Money!)* \n\nWe also have a community-wide currency called gp! Type /market to see what you can buy with it. You can also play games with the community using GP, check out <#CSHEL6LP5>, <#CN9LWFDQF>, and <#CL4DMMCLQ>. Stay tuned for more super exciting uses! I've also sent you some GP ;) You can check your balance at anytime by typing \`/balance\``."
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/money-with-wings_1f4b8.png",
+				"alt_text": "Money"
+			}
+        },
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Code of Conduct* \n\nPlease make sure to read our <https://hackclub.com/conduct|code of conduct>. All community members are expected to follow the code of conduct."
+			},
+			"accessory": {
+				"type": "image",
+				"image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/page-with-curl_1f4c3.png",
+				"alt_text": "Document"
+			}
+        }
+              
+      
+    ]
+  })
 
 app.action('coc_acknowledge', async ({ ack, body }) => {
   ack();
   await updateInteractiveMessage(body.message.ts, body.channel.id, '👍')
   //finishTutorial(body.channel.id, body.user.id)
-  await sendMessage(body.channel.id, `That's all from me! I hope I've been able to help you get acquainted with the Hack Club community.`)
-  const finalMessage = await sendMessage(body.channel.id, `I've added you to a few of the most popular channels, but there are many, many more! Click on "6 replies" to learn more about the channels you were just added to and discover some other cool channels...`, 5000)
-  const finalTs = finalMessage.message.ts
-
-  const hqDesc = `*<#C0C78SG9L>* is where people ask the community/@staff any questions about Hack Club.`
-  const loungeDesc = `*<#C0266FRGV>* is where people go to hang out with the community. There are no expectations here; just have fun and hang out with the community :)`
-  const shipDesc = `*<#C0M8PUPU6>* is where people go to _ship_, or share, projects they've made. All posts in that are not part of a thread must be projects you've made, and must include a link or attachment. Check out the awesome projects people in the community have made!`
-  const codeDesc = `*<#C0EA9S0A0>* is where people go to ask technical questions about code. If you're stuck on a problem or need some guidance, this is the place to go. `
-  
-  // channel descriptions
-  await sendMessage(body.channel.id, hqDesc, 10, finalTs)
-  await sendMessage(body.channel.id, loungeDesc, 10, finalTs)
-  await sendMessage(body.channel.id, shipDesc, 10, finalTs)
-  await sendMessage(body.channel.id, codeDesc, 10, finalTs)
-  await sendMessage(body.channel.id, `Here are a bunch of other active channels that you may be interested in:`, 10, finalTs)
-  await sendMessage(body.channel.id, `<#C0JDWKJVA> <#C0NP503L7> <#C6LHL48G2> <#C0DCUUH7E> <#CA3UH038Q> <#C90686D0T> <#CCW6Q86UF> <#C1C3K2RQV> <#CCW8U2LBC> <#CDLBHGUQN> <#CDJV1CXC2> <#C14D3AQTT> <#CBX54ACPJ> <#CC78UKWAC> <#C8P6DHA3W> <#C010SJJH1PT> <#CDJMS683D> <#CDN99BE9L> <#CSHEL6LP5>`, 10, finalTs)
+  await app.client.chat.postMessage({
+    token: process.env.SLACK_BOT_TOKEN,
+    channel: body.channel.id,
+    blocks: [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "I've added you to a few of the most popular channels, but there are many, many more! Let me introduce to you to them!"
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#welcome* \n\nYou remember this one, right? Say hello others as they join and give them a warm welcome!"
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/waving-hand-sign_1f44b.png",
+          "alt_text": "Waving Hand"
+        }
+              
+      },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#announcements* \n\nYou've a bit about our wonderful events. Check #announcements frequently are your sure to not miss one!"
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/public-address-loudspeaker_1f4e2.png",
+          "alt_text": "Loud Speaker"
+        }
+          },
+          
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#lounge* \n\nLounge is where people go to hang out with the community. There are no expectations here; just have fun and hang out with the community :)"
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/speech-balloon_1f4ac.png",
+          "alt_text": "Speech Bubble"
+        }
+          },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#code* \n\nThis channel is where people go to ask technical questions about code. If you're stuck on a problem or need some guidance, this is the place to go."
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/personal-computer_1f4bb.png",
+          "alt_text": "Laptop"
+        }
+          },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#ship* \n\nShip is where people go to ship, or share, projects they've made. All posts in that are not part of a thread must be projects you've made, and must include a link or attachment. Check out the awesome projects people in the community have made!"
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/ship_1f6a2.png",
+          "alt_text": "Ship"
+        }
+          },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*#hq* \n\nHere you can ask the community/staff any questions about Hack Club."
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/black-question-mark-ornament_2753.png",
+          "alt_text": "Question Mark"
+        }
+          },
+          {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*Go explore!* \n\nBut that's not all! Here are a bunch of other active channels that you may be interested in: #hackathons #gamedev #music #support #lgbtq #apple #design #android #cats #dogs #packages #photography #jenga #food #cooking #counttoamillion #film"
+        },
+        "accessory": {
+          "type": "image",
+          "image_url": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/237/world-map_1f5fa.png",
+          "alt_text": "Map"
+        }
+          }, 
+          {
+            "type": "divider"
+          },{
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "Your next steps: start talking to the community! Pick a few channels that you like from this message and start talking. We're excited to meet you :partyparrot: \n \n Also, I also highly recommend setting a profile picture. It makes you look a lot more like a real person :)  \n \n I'm going to head out now—if you have any questions about Hack Club or Slack that I didn't answer, please ask in <#C0C78SG9L> or send a Direct Message to <@U4QAK9SRW>."
+            }
+          }
+    ]
+  })
   
   await completeTutorial(body.user.id)
   
@@ -189,17 +372,6 @@ app.action('coc_acknowledge', async ({ ack, body }) => {
   await inviteUserToChannel(body.user.id, 'C0266FRGV') //lounge
   await inviteUserToChannel(body.user.id, 'C0M8PUPU6') //ship
   await inviteUserToChannel(body.user.id, 'C0EA9S0A0') //code
-
-  await sendEphemeralMessage('C0C78SG9L', hqDesc, body.user.id)
-  await sendEphemeralMessage('C0266FRGV', loungeDesc, body.user.id)
-  await sendEphemeralMessage('C0M8PUPU6', shipDesc, body.user.id)
-  await sendEphemeralMessage('C0EA9S0A0', codeDesc, body.user.id)
-  
-  await sendMessage(body.channel.id, `Your next steps: start talking to the community! Pick a few channels that you like from the thread above and start talking. We're excited to meet you :partyparrot:`)
-  await sendMessage(body.channel.id, `I also highly recommend setting a profile picture. It makes you look a lot more like a real person :)`)
-  await sendMessage(body.channel.id, `I'm going to head out now—if you have any questions about Hack Club or Slack that I didn't answer, please ask in <#C0C78SG9L> or send a Direct Message to <@U4QAK9SRW>.`)
-  await sendMessage(body.channel.id, `Toodles! :wave:`)
-  await timeout(3000)
   await sendSingleBlockMessage(body.channel.id, `(Btw, if you want to leave + archive this channel, click here)`, 'Leave channel', 'leave_channel')
 })
 
