@@ -316,6 +316,8 @@ const loadFlow = app => {
 				}
 
 				await sendMessage(app, body.event.channel, `Very interesting! We're super excited to have you here.`)
+				await sendMessage(app, body.event.channel, `To get started I have invited you to <#C015M4L9AHW>. There you can discuss everything about Summer of Making!`)
+				inviteUserToChannel(app, body.event.user, 'C015M4L9AHW')
 				await sendMessage(app, body.event.channel, `Summer of Making is all about making things and sharing your work. I just invited you to <#CCU43K0PK> and <#C0M8PUPU6> to help you get started.`)
 				inviteUserToChannel(app, body.event.user, 'CCU43K0PK')
 				inviteUserToChannel(app, body.event.user, 'C0M8PUPU6')
