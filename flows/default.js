@@ -39,7 +39,7 @@ const loadFlow = (app) => {
       await sendMessage(app, body.channel.id, `A few quick questions:`)
     } else {
       await sendMessage(app, body.channel.id, `First, the free stuff I promised:`)
-      const gpMessage = await sendMessage(app, body.channel.id, `<@UH50T81A6> give <@${body.user.id}> 20gp for free stuff!!!`, 1000)
+      const gpMessage = await sendMessage(app, body.channel.id, `<@UH50T81A6> give <@${body.user.id}> 20gp for free stuff!!! :eye:`, 1000)
       await sendMessage(app, body.channel.id, 'You can check your balance at any time by typing `@banker balance`.', 10, gpMessage.message.ts)
       await setPreviouslyCompletedTutorial(body.user.id)
       await sendMessage(app, body.channel.id, `Discovering the many uses of GP is a Hack Club rite of passage.`, 1000)
@@ -203,7 +203,7 @@ const loadFlow = (app) => {
         await sendMessage(app, body.event.channel, `...it sounds like a Slack ping!`, 2000)
         await sendMessage(app, body.event.channel, `Oh!!! It looks like you're already in a channel! <#C74HZS5A5>, the intro channel for new members.`)
         await sendMessage(app, body.event.channel, `Try clicking the red :ping: on your sidebar to the left :eyes:`)
-        await sendCustomizedMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` and \`#code\` to \`#photography\` and \`#cooking\`. We have nearly 1,000 weekly active members on here—wowee, that's a lot!!!`, 'https://cloud-8iwducj5z.vercel.app/moshed-2020-9-8-13-47-23.jpg', null, 10000)
+        await sendCustomizedMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` and \`#code\` to \`#photography\` and \`#ship\`. We have over 700 weekly active members on here—wowee, that's a lot!!! Oh, and we have over 1000 active channels! :smiley:`, 'https://cloud-8iwducj5z.vercel.app/moshed-2020-9-8-13-47-23.jpg', null, 10000)
         await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 5000)
 
         const welcomeChannel = 'C75M7C0SY';
@@ -257,7 +257,7 @@ const loadFlow = (app) => {
     await sendCustomizedMessage(app, body.channel.id, `‎‏‏‎ ‎`, 'https://cloud-603yzf4nn.vercel.app/screen_shot_2020-09-08_at_2.36.29_pm.png', ' ‎', 1000)
     await sendMessage(app, body.channel.id, `‎‏‏‎...`, 1000)
     await sendMessage(app, body.channel.id, `‎‏‏‎...`, 1000)
-    await sendMessage(app, body.channel.id, `Before you proceed, please make sure to read and abide by our <https://hackclub.com/conduct|code of conduct>. Every community member is expected to follow the code of conduct anywhere in the community.`)
+    await sendMessage(app, body.channel.id, `Before you proceed, please make sure to read and abide by our <https://hackclub.com/conduct|code of conduct>. Every community member is expected to follow the code of conduct anywhere in the community, including in events and meetings. .`)
 
     await sendSingleBlockMessage(app, body.channel.id, `Once you've read the code of conduct, click the :thumbsup: to unlock the Hack Club community.`, '👍', 'coc_acknowledge')
     await sendMessage(app, body.channel.id, `That's all from me! I can't wait to have you in the community :partyparrot:`)
@@ -300,9 +300,10 @@ const loadFlow = (app) => {
       <#CBX54ACPJ> - Share your photos!
       <#CC78UKWAC> - :jenga_sleep:
       <#C8P6DHA3W> - Don't enter if you're hungry!
-      <#C010SJJH1PT> - Learn about cooking!
+      <#C0EA9S0A0> - For general coding! There's also <#C0131FX5K98>, <#C016G8A6MKJ>, <#C012LPZUAPR>, <#C019NDLMJCV>, <#C0120KJH1SB>, <#C0121LVV79P>, and <#CLWA83V7Y>, to name a few.
       <#CDJMS683D> - Count to a million, one at a time.
-      <#CDN99BE9L> - Talk about Movies & TV!`,
+      <#C0M8PUPU6> - Ship projects(no promos) with the community!
+      <#C01504DCLVD>, - Share daily updates with photos!`,
       10,
       finalTs
     );
