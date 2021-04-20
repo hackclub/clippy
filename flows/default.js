@@ -203,7 +203,7 @@ const loadFlow = (app) => {
         await sendMessage(app, body.event.channel, `...it sounds like a Slack ping!`, 2000)
         await sendMessage(app, body.event.channel, `Oh!!! It looks like you're already in a channel! <#C74HZS5A5>, the intro channel for new members.`)
         await sendMessage(app, body.event.channel, `Try clicking the red :ping: on your sidebar to the left :eyes:`)
-        await sendCustomizedMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` and \`#code\` to \`#photography\` and \`#ship\`. We have over 700 weekly active members on here—wowee, that's a lot!!! Oh, and we have over 1000 active channels! :smiley:`, 'https://cloud-8iwducj5z.vercel.app/moshed-2020-9-8-13-47-23.jpg', null, 10000)
+        await sendCustomizedMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` to \`#code\` and \`#dogs\`. We have over 700 weekly active members on here—wowee, that's a lot!!! Oh, and we have over 1000 active channels! :smiley:`, 'https://cloud-8iwducj5z.vercel.app/moshed-2020-9-8-13-47-23.jpg', null, 10000)
         await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 5000)
 
         const welcomeChannel = 'C75M7C0SY';
