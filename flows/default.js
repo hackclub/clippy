@@ -338,7 +338,7 @@ const loadFlow = (app) => {
     await sendMessage(app, body.channel.id, `You can also check out <#C01AS1YEM8A> and join some Hack Clubbers' personal channels to meet some folks! If you want, you're totally welcome to create a personal channel where you can chat about whatever you'd like :party_orpheus:` )
     await sendMessage(app, body.channel.id, `I also highly recommend setting a profile picture. It makes you look a lot more like a real person :)`)
     await sendCustomizedMessage(app, body.channel.id, `If you're a hackalacker, ready to start digging into some projects, you can take advantage of tons of resources over at https://education.github.com/pack, and ask for some <https://hackclub.com/stickers/|RAD STICKERS> to decorate your hackalacking space.`)
-    await sendMessage(app, body.channel.id, `I'm going to head out now — if you have any questions about Hack Club or Slack that I didn't answer, please ask in <#C0C78SG9L> or send a Direct Message to <@U01HL7AL3KR> or <@U01DV5F30CF>.`)
+    await sendMessage(app, body.channel.id, `I'm going to head out now — if you have any questions about Hack Club or Slack that I didn't answer, please ask in <#C0C78SG9L> or send a Direct Message to <@U01DV5F30CF>, Hack Club Community Game Designer!`)
     await sendCustomizedMessage(app, body.channel.id, `Toodles! :wave:`, 'https://cloud-hz5majdx9.vercel.app/moshed-2020-9-8-13-50-11.jpg')
     await timeout(3000)
     await sendSingleBlockMessage(app, body.channel.id, `(Btw, if you want to leave + archive this channel, click here)`, 'Leave channel', 'leave_channel')
