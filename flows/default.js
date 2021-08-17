@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const { sendEphemeralMessage, getUserRecord, getIslandId,
-  hasPushedButton, hasCompletedTutorial, isBot,
+  //hasPushedButton, hasCompletedTutorial, isBot,
   sendMessage, setPronouns, getPronouns,
   updateSingleBlockMessage, sendSingleBlockMessage, updateInteractiveMessage,
   messageIsPartOfTutorial, inviteUserToChannel, getIslandName,
@@ -36,20 +36,20 @@ const loadFlow = (app) => {
     updateInteractiveMessage(app, body.message.ts, body.channel.id, `Hi there, I'm Clippy! It looks like you want join the Hack Club community. Before you unlock it, I need to show you around for a minute! Could you please click that button :point_down: so we can get this show on the road?`)
 
     updatePushedButton(body.user.id)
-    await sendMessage(app, body.channel.id, `Excellent! I'm happy to assist you in joining Hack Club today.`, 1000)
+    await sendMessage(app, body.channel.id, `:sparkles: Excellent! I'm happy to assist you in joining Hack Club today :yay:`, 1000)
 
     const prevCompleted = await hasPreviouslyCompletedTutorial(body.user.id)
     if (prevCompleted) {
-      await sendMessage(app, body.channel.id, `A few quick questions:`)
+      await sendMessage(app, body.channel.id, `Just a few quick questions:`)
     } else {
       /* await sendMessage(app, body.channel.id, `First, the free stuff I promised:`)
       const gpMessage = await sendMessage(app, body.channel.id, `<@UH50T81A6> give <@${body.user.id}> 20gp for free stuff!!!`, 1000)
       await sendMessage(app, body.channel.id, 'You can check your balance at any time by typing `@banker balance`.', 10, gpMessage.message.ts)*/
       await setPreviouslyCompletedTutorial(body.user.id)
-      await sendMessage(app, body.channel.id, `Now that that's out of the way, a few quick questions:`, 5000)
+      await sendMessage(app, body.channel.id, `Now that that's out of the way, a few quick questions:`, 2000)
     }
 
-    await timeout(3000)
+    await timeout(1000)
     await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: body.channel.id,
@@ -58,7 +58,7 @@ const loadFlow = (app) => {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": `What are your pronouns? (how you want to be referred to by others)`
+            "text": `:question: What are your pronouns? (how you want to be referred to by others)`
           }
         },
         {
@@ -129,7 +129,7 @@ const loadFlow = (app) => {
   app.action('she', e => runInFlow(e, async ({ ack, body }) => {
     ack();
     await setPronouns(app, body.user.id, 'she/her/hers', 'she')
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `What are your pronouns? (how you want to be referred to by others)`, `she/her/hers`, `mimmiggie`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: What are your pronouns? (how you want to be referred to by others)`, `she/her/hers`, `mimmiggie`)
     await sendMessage(app, body.channel.id, `:heart: Every profile here has a custom field for pronouns—I've gone ahead and set your pronouns for you, but <${`https://slack.com/intl/en-sg/help/articles/204092246-Edit-your-profile`}|here's a quick tutorial if you'd like to change them.>`)
     console.log("here.");
     sendHsQuestion(body.channel.id)
@@ -138,7 +138,7 @@ const loadFlow = (app) => {
   app.action('he', e => runInFlow(e, async ({ ack, body }) => {
     ack();
     await setPronouns(app, body.user.id, 'he/him/his', 'he')
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `What are your pronouns? (how you want to be referred to by others)`, `he/him/his`, `mimmiggie`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: What are your pronouns? (how you want to be referred to by others)`, `he/him/his`, `mimmiggie`)
     await sendMessage(app, body.channel.id, `:heart: Every profile here has a custom field for pronouns—I've gone ahead and set your pronouns for you, but <${`https://slack.com/intl/en-sg/help/articles/204092246-Edit-your-profile`}|here's a quick tutorial if you'd like to change them.>`)
     sendHsQuestion(body.channel.id)
   }));
@@ -146,27 +146,27 @@ const loadFlow = (app) => {
   app.action('they', e => runInFlow(e, async ({ ack, body }) => {
     ack();
     await setPronouns(app, body.user.id, 'they/them/theirs', 'they')
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `What are your pronouns? (how you want to be referred to by others)`, `they/them/theirs`, `mimmiggie`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: What are your pronouns? (how you want to be referred to by others)`, `they/them/theirs`, `mimmiggie`)
     await sendMessage(app, body.channel.id, `:heart: Every profile here has a custom field for pronouns—I've gone ahead and set your pronouns for you, but <${`https://slack.com/intl/en-sg/help/articles/204092246-Edit-your-profile`}|here's a quick tutorial if you'd like to change them.>`)
     sendHsQuestion(body.channel.id)
   }));
 
   app.action('something_else', e => runInFlow(e, async ({ ack, body }) => {
     ack();
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `What are your pronouns? (how you want to be referred to by others)`, `something else`, `mimmiggie`)
-    await sendMessage(app, body.channel.id, `What are your preferred pronouns? (Type your answer in chat)`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: What are your pronouns? (how you want to be referred to by others)`, `something else`, `mimmiggie`)
+    await sendMessage(app, body.channel.id, `:question: What are your preferred pronouns? (Type your answer in chat)`)
   }));
 
   app.action('hs_yes', e => runInFlow(e, async ({ ack, body }) => {
     ack();
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `Are you currently a high school student? (it's OK if you're not)`, `Yep!`, `mimmiggie`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: Are you currently a high school student? (it's OK if you're not)`, `Yep!`, `mimmiggie`)
     await sendMessage(app, body.channel.id, 'Great. Hack Club is a community of high schoolers, so you\'ll fit right in!')
-    await sendMessage(app, body.channel.id, `What brings you to the Hack Club community? (Type your answer in the chat)`)
+    await sendMessage(app, body.channel.id, `:question: What brings you to the Hack Club community? (Type your answer in the chat)`)
   }));
 
   app.action('hs_no', e => runInFlow(e, async ({ ack, body }) => {
     ack();
-    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `Are you currently a high school student? (it's OK if you're not)`, `No`, `mimmiggie`)
+    updateSingleBlockMessage(app, body.message.ts, body.channel.id, `:question: Are you currently a high school student? (it's OK if you're not)`, `No`, `mimmiggie`)
     await sendMessage(app, body.channel.id, 'Just a heads-up: Hack Club is a community of high schoolers, not a community of professional developers. You will likely still find a home here if you are in college, but if you\'re older than that, you may find yourself lost here.')
     await sendSingleBlockMessage(app, body.channel.id, 'If you understand this and still want to continue on, click the 👍 below.', '👍', 'hs_acknowledge')
   }));
@@ -174,7 +174,7 @@ const loadFlow = (app) => {
   app.action('hs_acknowledge', e => runInFlow(e, async ({ ack, body }) => {
     ack();
     await updateInteractiveMessage(app, body.message.ts, body.channel.id, '👍')
-    await sendMessage(app, body.channel.id, `What brings you to the Hack Club community? (Type your answer in the chat)`)
+    await sendMessage(app, body.channel.id, `:question: What brings you to the Hack Club community? (Type your answer in the chat)`)
   }));
 
   app.event('message', async body => {
@@ -193,42 +193,39 @@ const loadFlow = (app) => {
         let pronoun1 = lastUserMessage.slice(0, lastUserMessage.search("/"))
         await setPronouns(app, body.event.user, pronouns, pronoun1.toLowerCase())
         await sendMessage(app, body.event.channel, `:heart: Every profile here has a custom field for pronouns—I've gone ahead and set your pronouns for you, but <${`https://slack.com/intl/en-sg/help/articles/204092246-Edit-your-profile`}|here's a quick tutorial if you'd like to change them.>`)
-        console.log("yeah, it runs");
         await sendHsQuestion(body.event.channel)
       }
-      console.log("ooooooof");
       if (lastBotMessage.includes('What brings you')) {
-        console.log('what brings you!')
         const userRecord = await getUserRecord(body.event.user)
         islandTable.update(userRecord.id, { 'What brings them?': body.event.text })
-        await sendMessage(app, body.event.channel, `Neatoio! Well, it looks like the next step on my script is to show you around the community :hackclub::slack:`)
-        await sendMessage(app, body.event.channel, `You're currently on Slack, the platform our community uses. It's kind of like Discord, but a little different.`)
+        await sendMessage(app, body.event.channel, `Sick :cooll-thumbs:! Well, it looks like the next step on my script is to show you around the community :hackclub: :slack:`)
+        await sendMessage(app, body.event.channel, `You're currently on 'Slack', the platform our community uses. It's kind of like 'Discord', but different.`)
 
-        await sendMessage(app, body.event.channel, `Slack is organized into topical "channels". We have _hundreds_ of channels in our Slack, covering everything from—`, 5000)
+        await sendMessage(app, body.event.channel, `Slack is organized into conversations called "channels". We have _hundreds_ of channels in our Slack, covering everything from—`, 3000)
         await timeout(1000)
         await inviteUserToChannel(app, body.event.user, 'C74HZS5A5', true)
         await sendEphemeralMessage(app, 'C74HZS5A5', `<@${body.event.user}> Welcome to <#C74HZS5A5>, the lobby for new Hack Clubbers! Feel free to chat, hang out, ask questions, whatever :orpheus:`, body.event.user)
-        await sendMessage(app, body.event.channel, 'Wait a second...did you hear that??', 2000)
-        await sendMessage(app, body.event.channel, `...it sounds like a Slack ping!`, 2000)
-        await sendMessage(app, body.event.channel, `Oh!!! It looks like you're already in a channel! <#C74HZS5A5>, the intro channel for new members.`)
+        await sendMessage(app, body.event.channel, 'Wait a second...did you hear that??', 1000)
+        await sendMessage(app, body.event.channel, `...it sounds like a Slack ping!`, 1000)
+        await sendMessage(app, body.event.channel, `:exclamation: Oh!!! It looks like you're already in a channel! <#C74HZS5A5>, the intro channel for new members.`)
         await sendMessage(app, body.event.channel, `Try clicking the red :ping: on your sidebar to the left :eyes:`)
-        await sendMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` and \`#code\` to \`#photography\` and \`#cooking\`. We have nearly 1,000 weekly active members on here—wowee, that's a lot!!!`, 10000)
-        await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 5000)
+        await sendMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#scrapbook\` and \`#code\` to \`#confessions\` and \`#ship\`. We have nearly 1,000 weekly active members on here — eek, that's a lot!!!`, 1000)
+        await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 2000)
 
         const welcomeChannel = 'C75M7C0SY';
-        await timeout(3000)
+        await timeout(2000)
         await inviteUserToChannel(app, body.event.user, welcomeChannel, true)
         const island = await getIslandName(body.event.user)
         await sendEphemeralMessage(app, welcomeChannel, `<@${body.event.user}> Feel free to introduce yourself to the community in <#${welcomeChannel}>. When you're done, head back to <https://hackclub.slack.com/archives/${island}|#${island}> to continue your introduction to the community.`, body.event.user)
         await sendCustomizedMessage(app, body.event.channel, `I just invited you to your second channel, <#${welcomeChannel}>. Join by clicking on it in your sidebar, and feel free to introduce yourself to the community. (totally optional, no expectations)`, 'https://cloud-hz5majdx9.vercel.app/moshed-2020-9-8-13-50-21.jpg', null, 1000)
-        await sendSingleBlockMessage(app, body.event.channel, "When you're ready, click the 👍 on this message to continue.", '👍', 'introduced')
+        await sendSingleBlockMessage(app, body.event.channel, "When you're ready, click the :cooll-thumbs: on this message to continue.", ':cooll-thumbs:', 'introduced')
       }
     }
   });
 
   app.action('introduced', e => runInFlow(e, async ({ ack, body }) => {
     ack();
-    updateInteractiveMessage(app, body.message.ts, body.channel.id, '👍')
+    updateInteractiveMessage(app, body.message.ts, body.channel.id, ':cooll-thumbs:')
     // await sendMessage(app, body.channel.id, `Awesome! Now let's spiff up your Slack, try this theme:`)
     // await sendMessage(app, body.channel.id, `#161618,#000000,#FFCD00,#161618,#000010,#FFCD00,#FFDA60,#FFB500,#000010,#FFBC00`)
 
@@ -239,7 +236,7 @@ const loadFlow = (app) => {
 
     // await sendMessage(app, body.channel.id, `OK! That's all from me! Before you can proceed, you must abide by the code of conduct at https://conduct.hackclub.com.`, 5000)
 
-    await sendMessage(app, body.channel.id, `Cool beans!!! :beany:`)
+    // await sendMessage(app, body.channel.id, `Cool beans!!! :beany:`)
     /* await sendMessage(app, body.channel.id, `<#C01A6SCS14M> Hack Club <#C01A6SCS14M> is a magical place where high schoolers learn to code, ship awesome projects, and hang out.`)
     await sendCustomizedMessage(app, body.channel.id, `Whether you <#C01A6SCS14M> want to start your own coding <#C01A6SCS14M> club, attend our weekly community <#C01A6SCS14M> events, or just hang out in a community full of teenagers, you've found <#C01A6SCS14M> a home in Hack Club.`, 'https://cloud-pr1qqfx4d.vercel.app/moshed-2020-9-8-15-10-37.jpg', null, 4000)
     /* await sendCustomizedMessage(app, body.channel.id, `I <#C01A6SCS14M> could tell <#C01A6SCS14M> you all about the <#C01A6SCS14M> things we <#C01A6SCS14M> do <#C01A6SCS14M> for high schoolers and <#C01A6SCS14M> tell <#C01A6SCS14M> you all <#C01A6SCS14M> about <#C01A6SCS14M> the <#C01A6SCS14M>community <#C01A6SCS14M>, but honestly <#C01A6SCS14M> I think the best <#C01A6SCS14M> way to do that is to unlock the rest of the community for you.`, 'https://cloud-4k337bfvv.vercel.app/moshed-2020-9-8-15-12-49.jpg', null, 8000)
@@ -281,7 +278,7 @@ const loadFlow = (app) => {
     sendToWelcomeCommittee(app, body.user.id, reasonJoined)
 
     await sendMessage(app, body.channel.id, `Woohoo! Welcome to Hack Club! :yay::orpheus::snootslide:`, 1000)
-    const finalMessage = await sendMessage(app, body.channel.id, `I've added you to a few of the most popular channels, but there are many, many more! Click on "2 replies" just under this message to discover some other cool channels...`, 5000)
+    const finalMessage = await sendMessage(app, body.channel.id, `I've added you to a few of the most popular channels, but there are many, many more! Click on "2 replies" just under this message to discover some other cool channels...`, 2000)
     const finalTs = finalMessage.message.ts
 
     const hqDesc = `*<#C0C78SG9L>* is where people ask the community/@staff any questions about Hack Club.`
@@ -359,7 +356,7 @@ const loadFlow = (app) => {
         })
         await inviteUserToChannel(app, body.user.id, joinData["response"][0]["fields"]["Club"]) //add to club channel
         await sendMessage(app, body.channel.id, `:eyes: I see you are a member of the <#${joinData["response"][0]["fields"]["Club"]}> club! I've added you to the club's channel so you can chat with your fellow club members!`)
-        await timeout(3000)
+        await timeout(1000)
       }
     }
     
@@ -368,12 +365,12 @@ const loadFlow = (app) => {
     await sendMessage(app, body.channel.id, `I also highly recommend setting a profile picture. It makes you look a lot more like a real person :)`)
     await sendMessage(app, body.channel.id, `I'm going to head out now — if you have any questions about Hack Club or Slack that I didn't answer, please ask in <#C0C78SG9L> or send a Direct Message to <@U01DV5F30CF>.`)
     await sendCustomizedMessage(app, body.channel.id, `Toodles! :wave:`, 'https://cloud-hz5majdx9.vercel.app/moshed-2020-9-8-13-50-11.jpg')
-    await timeout(3000)
+    await timeout(1000)
     await sendSingleBlockMessage(app, body.channel.id, `(Btw, if you want to leave + archive this channel, click here)`, 'Leave channel', 'leave_channel')
   }));
 
   async function sendHsQuestion(channel) {
-    await timeout(3000)
+    await timeout(1000)
     await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
       channel: channel,
