@@ -9,6 +9,7 @@ const { sendEphemeralMessage, getUserRecord, getIslandId,
   updatePushedButton, setPreviouslyCompletedTutorial, hasPreviouslyCompletedTutorial,
   generateIslandName, islandTable, getLatestMessages,
   startTutorial, setFlow, sendToWelcomeCommittee, promoteUser, sendCustomizedMessage } = require('../utils/utils')
+const fetch = require('node-fetch');
 
 async function defaultFilter(e) {
   const userID = e.body.user_id || (e.body.event ? e.body.event.user : e.body.user.id)
@@ -177,6 +178,12 @@ const loadFlow = (app) => {
     await sendMessage(app, body.channel.id, `What brings you to the Hack Club community? (Type your answer in the chat)`)
   }));
 
+  // TODO: Validate channel id?
+  app.action("join", async ({ack,body,actions}) => {
+    ack()
+    await inviteUserToChannel(app, body.user.id, actions.value)
+  })
+
   app.event('message', async body => {
     const correctChannel = await getIslandId(body.event.user)
 
@@ -212,7 +219,59 @@ const loadFlow = (app) => {
         await sendMessage(app, body.event.channel, `...it sounds like a Slack ping!`, 2000)
         await sendMessage(app, body.event.channel, `Oh!!! It looks like you're already in a channel! <#C0266FRGV>, the hangout channel for Hack Club members.`)
         await sendMessage(app, body.event.channel, `Try clicking the red :ping: on your sidebar to the left :eyes:`)
-        await sendMessage(app, body.event.channel, `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these "channels" in the community, covering every topic you can think of, from \`#gamedev\` and \`#code\` to \`#photography\` and \`#cooking\`. We have nearly 1,000 weekly active members on here—wowee, that's a lot!!! Our friend and resident log-wrangler <@U01S7UUCB89> can help you find channels to join - just run \`/sup\` at any time to see what the most active channels are in the last 2 hours.`, 10000)
+        const topChannelBlocks = async () => {
+          const res = await (
+              await fetch("https://streamboot-bot.herokuapp.com/api/top/channels")
+          ).json();
+          const topChannelIds = res.map((c) => c.channel_id)
+          const channelBlocks = []
+          for (let i = 0; i < 4, i++;) {
+            const channel = topChannelIds[i]
+            const topic = (await body.client.channels.info({channel})).channel.topic.value
+            const block = {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": `*<#${channel_id}>*\n:` + topic
+              },
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "Join"
+                },
+                "action_id": `join`,
+                "value": channel
+              }
+            }
+            channelBlocks.push(block)
+          }
+
+          return [{
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": `<@${body.event.user}> As I was saying before I got distracted, we have _hundreds_ of these \"channels\" in the community, covering every topic you can think of. We have nearly 1,000 weekly active members on here—wowee, that's a lot!!! Our friend and resident log-wrangler <@U01S7UUCB89> can help you find channels to join - just run \`/sup\` at any time to see what the most active channels are in the last 2 hours.`
+            }
+          },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "Check out these channels:"
+              }
+            }, ...channelBlocks, {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "_Run `/sup` to see more recommendations!_"
+              }
+            }]
+        }
+        await sendMessage(app, body.event.channel, await topChannelBlocks(), 30000)
         await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 5000)
 
         const welcomeChannel = 'C75M7C0SY';
