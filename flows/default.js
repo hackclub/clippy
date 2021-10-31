@@ -224,8 +224,8 @@ const loadFlow = (app) => {
               await fetch("https://streamboot-bot.herokuapp.com/api/top/channels")
           ).json();
           const topChannelIds = res.map((c) => c.channel_id)
-          // #bot-spam-for-deer, #cdn, #spam, #bot-spam
-          const channelRecBlocklist = ["C020LT3UCBW", "C016DEDUL87", "C141CCD2Q", "C0P5NE354"]
+          // #bot-spam-for-deer, #cdn, #spam, #bot-spam, #orpheus-internals
+          const channelRecBlocklist = ["C020LT3UCBW", "C016DEDUL87", "C141CCD2Q", "C0P5NE354", "CLU651WHY"]
           const channelBlocks = []
           let max = 4
           for (let i = 0; i < max; i++) {
