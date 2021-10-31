@@ -179,9 +179,9 @@ const loadFlow = (app) => {
   }));
 
   // TODO: Validate channel id?
-  app.action("join", async ({ack,body,actions}) => {
+  app.action("join", async ({ack,body,payload}) => {
     ack()
-    await inviteUserToChannel(app, body.user.id, actions.value)
+    await inviteUserToChannel(app, body.user.id, payload.value, true)
   })
 
   app.event('message', async body => {
@@ -224,15 +224,27 @@ const loadFlow = (app) => {
               await fetch("https://streamboot-bot.herokuapp.com/api/top/channels")
           ).json();
           const topChannelIds = res.map((c) => c.channel_id)
+          // #bot-spam-for-deer, #cdn, #spam, #bot-spam
+          const channelRecBlocklist = ["C020LT3UCBW", "C016DEDUL87", "C141CCD2Q", "C0P5NE354"]
           const channelBlocks = []
-          for (let i = 0; i < 4, i++;) {
+          let max = 4
+          for (let i = 0; i < max; i++) {
             const channel = topChannelIds[i]
-            const topic = (await body.client.channels.info({channel})).channel.topic.value
+            if (channelRecBlocklist.includes(channel)) {
+              max++;
+              continue
+            }
+            const channelInfo = (await body.client.conversations.info({channel})).channel
+            if (channelInfo.name.includes("spam")) {
+              max++;
+              continue
+            }
+            const topic = channelInfo.topic.value
             const block = {
               "type": "section",
               "text": {
                 "type": "mrkdwn",
-                "text": `*<#${channel_id}>*\n:` + topic
+                "text": `*<#${channel}>*\n` + topic
               },
               "accessory": {
                 "type": "button",
@@ -246,7 +258,6 @@ const loadFlow = (app) => {
             }
             channelBlocks.push(block)
           }
-
           return [{
             "type": "section",
             "text": {
@@ -271,7 +282,8 @@ const loadFlow = (app) => {
               }
             }]
         }
-        await sendMessage(app, body.event.channel, await topChannelBlocks(), 30000)
+        const [_, channelBlocks] = await Promise.all([timeout(30000),topChannelBlocks()])
+        await body.client.chat.postMessage({channel: body.event.channel, blocks: channelBlocks})
         await sendMessage(app, body.event.channel, `Want to be invited to another channel?`, 5000)
 
         const welcomeChannel = 'C75M7C0SY';
