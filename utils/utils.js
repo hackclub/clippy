@@ -24,8 +24,7 @@ const eventsTable = new AirtablePlus({
 });
 exports.eventsTable = eventsTable;
 
-const startTutorial = async (app, user, flow, restart) => {
-  flow = "Default";
+const startTutorial = async (app, user, flow="Default", restart) => {
   const islandName = await generateIslandName();
   const newChannel = await app.client.conversations.create({
     token: process.env.SLACK_BOT_TOKEN,

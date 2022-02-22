@@ -59,6 +59,9 @@ async function restart({ command, ack }) {
   } else if (command.text === 'som') {
     await setFlow(command.user_id, 'Summer of Making')
     await startTutorial(app, command.user_id, 'som', true, false)
+  } else if (command.text === 'gamelab') {
+    await setFlow(command.user_id, 'Gamelab')
+    await startTutorial(app, command.user_id, 'Gamelab', true, false)
   }
 }
 
