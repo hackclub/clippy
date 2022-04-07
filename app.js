@@ -57,6 +57,7 @@ app.event("team_join", async (body) => {
   } catch(e) {
     console.error(e);
   }
+  console.log({needsToOnboard, user})
   if (needsToOnboard) {
     await startTutorial(app, user, "default");
   }
