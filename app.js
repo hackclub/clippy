@@ -52,7 +52,8 @@ app.event("team_join", async (body) => {
   try {
     // @msw: see hackclub/toriel for usage
     // https://github.com/hackclub/toriel/commit/d0e79852a0f200d8cae58bc3da6e1d0ae68ad946
-    const response = await fetch(`https://toriel.hackclub.com/slack-tutorial/${user}`);
+    const response = await fetch(`https://toriel.hackclub.com/slack-tutorial/${user}`).then(r => r.json());
+    console.log({response})
     needsToOnboard = !(response.invite);
   } catch(e) {
     console.error(e);
