@@ -16,7 +16,7 @@ const defaultIntro = [
           emoji: true,
           text: "Let me in, Clippy!",
         },
-        action_id: "intro_progress_1",
+        action_id: "intro_progress_epoch_gate", // change to intro_progress_1 after epoch
       },
     ],
   },
