@@ -139,54 +139,6 @@ const loadFlow = (app) => {
     });
   }
 
-
-  app.action("intro_progress_epoch_gate", (e) =>
-    runInFlow(e, async ({ ack, body }) => {
-      ack();
-      const text = `**Psst. Are you joining from :epoch: Epoch or one of our :epoch-vt::epoch-ba::epoch-tx: Satellite Events?**`;
-      const buttons = [
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            emoji: true,
-            text: "Yes!",
-          },
-          style: "primary",
-          action_id: "intro_progress_1",
-        },
-        {
-          type: "button",
-          text: {
-            type: "plain_text",
-            emoji: true,
-            text: "Nope!",
-          },
-          style: "primary",
-          action_id: "intro_progress_1",
-        }
-      ];
-  
-      await app.client.chat.postMessage({
-        token: process.env.SLACK_BOT_TOKEN,
-        channel: body.channel.id,
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text
-            },
-          },
-          {
-            type: "actions",
-            elements: buttons
-          },
-        ],
-      });
-    })
-  );
-
   app.action("intro_progress_1", (e) =>
     runInFlow(e, async ({ ack, body }) => {
       ack();
