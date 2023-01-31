@@ -59,7 +59,7 @@ app.event("team_join", async (body) => {
   }
   console.log({needsToOnboard, user})
   if (needsToOnboard) {
-    await startTutorial(app, user, "default");
+    // await startTutorial(app, user, "default");
   }
 });
 
