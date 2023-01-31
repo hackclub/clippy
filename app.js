@@ -59,6 +59,8 @@ app.event("team_join", async (body) => {
   }
   console.log({needsToOnboard, user})
   if (needsToOnboard) {
+    // this now sends them to toriel
+    await fetch(`https://toriel.hackclub.com/start-from-clippy?user_id=${user}`).then(r => r.json());
     // await startTutorial(app, user, "default");
   }
 });
