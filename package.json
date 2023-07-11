@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "@bugsnag/js": "^7.16.1",
-    "@slack/bolt": "^2.0.1",
+    "@slack/bolt": "^2.7.0",
     "airtable-plus": "^1.0.4",
     "axios": "^0.21.2",
     "dotenv": "^8.2.0",
